@@ -7,59 +7,59 @@
 
 void perturba(const Instancia* inst, int* ordem) {
     int n = inst->n;
-    std::vector<int>  pred_fora(n);
-    std::vector<int>  L;
-    std::vector<char> em_L(n, 0);
-    std::vector<int>  nova;
-    L.reserve(n);
-    nova.reserve(n);
+    std::vector<int>  predecessores_pendentes(n);
+    std::vector<int>  tarefas_liberadas;
+    std::vector<char> esta_liberada(n, 0);
+    std::vector<int>  nova_ordem;
+    tarefas_liberadas.reserve(n);
+    nova_ordem.reserve(n);
 
     for (int i = 0; i < n; i++) {
-        pred_fora[i] = inst->num_predecessores[i];
+        predecessores_pendentes[i] = inst->num_predecessores[i];
     }
 
     for (int i = 0; i < n; i++) {
-        if (pred_fora[i] == 0) {
-            L.push_back(i);
-            em_L[i] = 1;
+        if (predecessores_pendentes[i] == 0) {
+            tarefas_liberadas.push_back(i);
+            esta_liberada[i] = 1;
         }
     }
 
     int semente = ordem[0];
-    for (size_t x = 0; x < L.size(); x++) {
-        if (L[x] == semente) {
-            L[x] = L.back();
-            L.pop_back();
+    for (size_t x = 0; x < tarefas_liberadas.size(); x++) {
+        if (tarefas_liberadas[x] == semente) {
+            tarefas_liberadas[x] = tarefas_liberadas.back();
+            tarefas_liberadas.pop_back();
             break;
         }
     }
-    em_L[semente] = 0;
-    nova.push_back(semente);
+    esta_liberada[semente] = 0;
+    nova_ordem.push_back(semente);
     for (int k = 0; k < inst->num_sucessores[semente]; k++) {
         int s = inst->sucessores[semente][k];
-        if (--pred_fora[s] == 0 && !em_L[s]) {
-            L.push_back(s);
-            em_L[s] = 1;
+        if (--predecessores_pendentes[s] == 0 && !esta_liberada[s]) {
+            tarefas_liberadas.push_back(s);
+            esta_liberada[s] = 1;
         }
     }
 
-    while ((int)nova.size() < n) {
-        int r = aleatorio_inteiro((int)L.size());
-        int t = L[r];
-        L[r] = L.back();
-        L.pop_back();
-        em_L[t] = 0;
-        nova.push_back(t);
+    while ((int)nova_ordem.size() < n) {
+        int r = aleatorio_inteiro((int)tarefas_liberadas.size());
+        int t = tarefas_liberadas[r];
+        tarefas_liberadas[r] = tarefas_liberadas.back();
+        tarefas_liberadas.pop_back();
+        esta_liberada[t] = 0;
+        nova_ordem.push_back(t);
         for (int k = 0; k < inst->num_sucessores[t]; k++) {
             int s = inst->sucessores[t][k];
-            if (--pred_fora[s] == 0 && !em_L[s]) {
-                L.push_back(s);
-                em_L[s] = 1;
+            if (--predecessores_pendentes[s] == 0 && !esta_liberada[s]) {
+                tarefas_liberadas.push_back(s);
+                esta_liberada[s] = 1;
             }
         }
     }
 
-    std::copy(nova.begin(), nova.end(), ordem);
+    std::copy(nova_ordem.begin(), nova_ordem.end(), ordem);
 }
 
 long executar_ils(const Instancia* inst, ParametrosILS p) {

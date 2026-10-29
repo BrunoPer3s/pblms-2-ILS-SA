@@ -30,6 +30,16 @@ void ordem_topologica(const Instancia* inst, int* ordem) {
     }
 }
 
+static long calcula_z(const long* carga, int m) {
+    long z = 0;
+    for (int s = 0; s < m; s++) {
+        if (carga[s] > z) {
+            z = carga[s];
+        }
+    }
+    return z;
+}
+
 static int cabe_em_m_estacoes(const Instancia* inst, const int* ordem, long alvo) {
     int grupos = 1;
     long soma = 0;
