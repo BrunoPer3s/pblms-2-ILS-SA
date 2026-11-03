@@ -62,7 +62,7 @@ void perturba(const Instancia* inst, int* ordem) {
     std::copy(nova_ordem.begin(), nova_ordem.end(), ordem);
 }
 
-long executar_ils(const Instancia* inst, ParametrosILS p) {
+ResultadoILS executar_ils(const Instancia* inst, ParametrosILS p) {
     int n = inst->n, m = inst->m;
     std::vector<int>  ordem(n);
     std::vector<int>  melhor_ordem(n);
@@ -81,9 +81,13 @@ long executar_ils(const Instancia* inst, ParametrosILS p) {
     long melhor_z = busca_local_sa(inst, ordem.data(), p.temp_inicial, p.temp_final,
                                    p.taxa_resfriamento, p.num_vizinhos);
     melhor_ordem = ordem;
+    double tempo_melhor = tempo_decorrido();
 
     long iteracao = 0;
-    while (iteracao < p.ils_max && melhor_z > limite_inferior) {
+    while (iteracao < p.ils_max) {
+        if (p.para_no_limite_inferior && melhor_z <= limite_inferior) {
+            break;
+        }
         ordem = melhor_ordem;
         perturba(inst, ordem.data());
         long z = busca_local_sa(inst, ordem.data(), p.temp_inicial, p.temp_final,
@@ -92,8 +96,15 @@ long executar_ils(const Instancia* inst, ParametrosILS p) {
         if (z < melhor_z) {
             melhor_z = z;
             melhor_ordem = ordem;
+            tempo_melhor = tempo_decorrido();
         }
     }
 
-    return melhor_z;
+    ResultadoILS resultado;
+    resultado.z               = melhor_z;
+    resultado.limite_inferior = limite_inferior;
+    resultado.iteracoes       = iteracao;
+    resultado.tempo_melhor    = tempo_melhor;
+    resultado.melhor_ordem    = melhor_ordem;
+    return resultado;
 }

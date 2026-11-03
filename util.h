@@ -5,4 +5,7 @@ void   semear_gerador(unsigned semente);
 double aleatorio01(void);
 int    aleatorio_inteiro(int n);
 
+void   inicia_cronometro(void);
+double tempo_decorrido(void);
+
 #endif

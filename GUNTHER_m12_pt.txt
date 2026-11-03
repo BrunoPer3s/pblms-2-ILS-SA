@@ -1,0 +1,19 @@
+Instancia: INSTANCIAS/GUNTHER.IN2 | m: 12 | decodificacao: pt | seed: 1793705451
+FO (tempo de ciclo z): 44
+Lower bound: 41
+Tempo total: 154.55 seg
+Tempo ate melhor solucao: 0.08 seg
+Iteracoes ILS: 2000
+--------------------------------------------------
+Estacao 1 (carga 35): 1 5 
+Estacao 2 (carga 44): 6 12 
+Estacao 3 (carga 44): 2 7 8 10 14 18 
+Estacao 4 (carga 43): 9 17 19 
+Estacao 5 (carga 34): 3 20 
+Estacao 6 (carga 41): 4 15 
+Estacao 7 (carga 40): 16 21 30 
+Estacao 8 (carga 38): 11 22 25 
+Estacao 9 (carga 44): 23 24 31 
+Estacao 10 (carga 34): 13 26 27 32 
+Estacao 11 (carga 42): 28 34 
+Estacao 12 (carga 44): 29 33 35 
