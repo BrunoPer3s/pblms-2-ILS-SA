@@ -21,7 +21,7 @@ struct ResultadoILS {
     std::vector<int> melhor_ordem;
 };
 
-void perturba(const Instancia* inst, int* ordem);
+long perturba(const Instancia* inst, int* ordem, int* estacao, long* carga);
 ResultadoILS executar_ils(const Instancia* inst, ParametrosILS p);
 
 #endif

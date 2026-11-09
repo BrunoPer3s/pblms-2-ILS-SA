@@ -110,7 +110,7 @@ int main(int argc, char* argv[]) {
     semear_gerador(semente);
 
     ParametrosILS p;
-    p.ils_max                 = 2000;
+    p.ils_max                 = 5000;
     p.temp_inicial            = 1000.0;
     p.temp_final              = 0.1;
     p.taxa_resfriamento       = 0.97;

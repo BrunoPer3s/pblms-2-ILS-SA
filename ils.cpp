@@ -5,7 +5,7 @@
 #include <vector>
 #include <algorithm>
 
-void perturba(const Instancia* inst, int* ordem) {
+long perturba(const Instancia* inst, int* ordem, int* estacao, long* carga) {
     int n = inst->n;
     std::vector<int>  predecessores_pendentes(n);
     std::vector<int>  tarefas_liberadas;
@@ -60,6 +60,8 @@ void perturba(const Instancia* inst, int* ordem) {
     }
 
     std::copy(nova_ordem.begin(), nova_ordem.end(), ordem);
+
+    return decodifica_mediaCustoAlternada(inst, ordem, estacao, carga);
 }
 
 ResultadoILS executar_ils(const Instancia* inst, ParametrosILS p) {
@@ -76,9 +78,9 @@ ResultadoILS executar_ils(const Instancia* inst, ParametrosILS p) {
     }
 
     ordem_topologica(inst, ordem.data());
-    decodifica_mediaCustoAlternada(inst, ordem.data(), estacao.data(), carga.data());
+    long z_inicial = decodifica_mediaCustoAlternada(inst, ordem.data(), estacao.data(), carga.data());
 
-    long melhor_z = busca_local_sa(inst, ordem.data(), p.temp_inicial, p.temp_final,
+    long melhor_z = busca_local_sa(inst, ordem.data(), z_inicial, p.temp_inicial, p.temp_final,
                                    p.taxa_resfriamento, p.num_vizinhos);
     melhor_ordem = ordem;
     double tempo_melhor = tempo_decorrido();
@@ -89,8 +91,8 @@ ResultadoILS executar_ils(const Instancia* inst, ParametrosILS p) {
             break;
         }
         ordem = melhor_ordem;
-        perturba(inst, ordem.data());
-        long z = busca_local_sa(inst, ordem.data(), p.temp_inicial, p.temp_final,
+        long z_perturbado = perturba(inst, ordem.data(), estacao.data(), carga.data());
+        long z = busca_local_sa(inst, ordem.data(), z_perturbado, p.temp_inicial, p.temp_final,
                                 p.taxa_resfriamento, p.num_vizinhos);
         iteracao++;
         if (z < melhor_z) {

@@ -5,7 +5,7 @@
 #include <algorithm>
 #include <cmath>
 
-long busca_local_sa(const Instancia* inst, int* ordem,
+long busca_local_sa(const Instancia* inst, int* ordem, long z_inicial,
                     double temp_inicial, double temp_final,
                     double taxa_resfriamento, int num_vizinhos) {
 
@@ -18,7 +18,7 @@ long busca_local_sa(const Instancia* inst, int* ordem,
     std::vector<int>  estacao(n);
     std::vector<long> carga(m);
 
-    long z_atual  = decodifica(inst, ordem_atual.data(), estacao.data(), carga.data());
+    long z_atual  = z_inicial;
     long z_melhor = z_atual;
 
     double T = temp_inicial;
